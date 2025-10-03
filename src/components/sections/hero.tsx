@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";

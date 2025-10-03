@@ -94,7 +94,7 @@ export function Features() {
             Why CoFounds Delivers Results — Not Just Listings
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            We're not another job board. We're your career companion, built to
+            We&apos;re not another job board. We&apos;re your career companion, built to
             help you succeed.
           </p>
         </motion.div>

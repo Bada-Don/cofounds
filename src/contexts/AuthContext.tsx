@@ -56,7 +56,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       } else {
         throw new Error('Invalid credentials');
       }
-    } catch (error) {
+    } catch {
       throw new Error('Sign in failed. Please try again.');
     } finally {
       setLoading(false);
@@ -85,8 +85,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         fullName: data.fullName
       };
       setUser(mockUser);
-    } catch (error: any) {
-      throw error;
+    } catch (error: unknown) {
+      throw error instanceof Error ? error : new Error('Sign up failed');
     } finally {
       setLoading(false);
     }
@@ -104,7 +104,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         fullName: 'Google Demo User'
       };
       setUser(mockUser);
-    } catch (error) {
+    } catch {
       throw new Error('Google sign in failed. Please try again.');
     } finally {
       setLoading(false);
@@ -116,7 +116,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       await new Promise(resolve => setTimeout(resolve, 500));
       setUser(null);
-    } catch (error) {
+    } catch {
       throw new Error('Sign out failed. Please try again.');
     } finally {
       setLoading(false);

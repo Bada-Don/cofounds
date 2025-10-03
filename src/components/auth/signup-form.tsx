@@ -61,8 +61,8 @@ export function SignupForm({ className, onSwitchToLogin }: SignupFormProps) {
         confirmPassword: formData.confirmPassword
       });
       // Navigation will be handled by the auth context
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -74,8 +74,8 @@ export function SignupForm({ className, onSwitchToLogin }: SignupFormProps) {
     try {
       await signInWithGoogle();
       // Navigation will be handled by the auth context
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setGoogleLoading(false);
     }

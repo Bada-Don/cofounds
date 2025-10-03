@@ -58,7 +58,7 @@ export function FAQ() {
             Everything you need to know about Cofounds
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Got questions? We've got answers. Can't find what you're looking
+            Got questions? We&apos;ve got answers. Can&apos;t find what you&apos;re looking
             for? Reach out to our team.
           </p>
         </motion.div>
