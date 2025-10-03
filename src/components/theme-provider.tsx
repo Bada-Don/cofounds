@@ -13,6 +13,14 @@ interface ThemeProviderProps {
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  triggerRipple: (x: number, y: number) => void;
+}
+
+interface RippleState {
+  isActive: boolean;
+  x: number;
+  y: number;
+  key: number;
 }
 
 const ThemeContext = React.createContext<ThemeContextType | undefined>(
@@ -25,6 +33,12 @@ export function ThemeProvider({
   storageKey = "cofounds-theme",
 }: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState<Theme>(defaultTheme);
+  const [ripple, setRipple] = React.useState<RippleState>({
+    isActive: false,
+    x: 0,
+    y: 0,
+    key: 0
+  });
 
   // Initialize theme from localStorage on mount
   React.useEffect(() => {
@@ -49,6 +63,14 @@ export function ThemeProvider({
     root.classList.add(theme);
   }, [theme]);
 
+  const triggerRipple = React.useCallback((x: number, y: number) => {
+    setRipple({ isActive: true, x, y, key: Date.now() });
+    // Reset ripple after animation
+    setTimeout(() => {
+      setRipple(prev => ({ ...prev, isActive: false }));
+    }, 900);
+  }, []);
+
   const setTheme = React.useCallback(
     (newTheme: Theme) => {
       try {
@@ -62,8 +84,24 @@ export function ThemeProvider({
   );
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, triggerRipple }}>
       {children}
+      {/* Theme Ripple Effect Overlay */}
+      {ripple.isActive && (
+        <div
+          key={ripple.key}
+          className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden"
+        >
+          <div
+            className="absolute rounded-full theme-ripple"
+            style={{
+              left: ripple.x,
+              top: ripple.y,
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
+        </div>
+      )}
     </ThemeContext.Provider>
   );
 }

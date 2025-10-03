@@ -1,0 +1,213 @@
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useState, FormEvent } from 'react'
+import { useAuth } from '../contexts/AuthContext'
+import { Loader2 } from 'lucide-react'
+
+export function SignupForm({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<"div">) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { signUp, signInWithGoogle } = useAuth();
+  
+  // Get the return URL from location state, default to contract-analysis
+  const from = (location.state as any)?.from || '/contract-analysis';
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    termsAccepted: false
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    if (!formData.termsAccepted) {
+      setError('Please accept the Terms and Privacy Policy');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await signUp({
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword
+      });
+      navigate(from, { replace: true });
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    setError('');
+    setGoogleLoading(true);
+    try {
+      await signInWithGoogle();
+      navigate(from, { replace: true });
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+  return (
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl">Create Account</CardTitle>
+          <CardDescription>
+            Enter your details below to create your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="flex text-start flex-col gap-6">
+              {error && (
+                <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/10 p-3 rounded-md">
+                  {error}
+                </div>
+              )}
+              <div className="grid gap-2">
+                <Label htmlFor="fullName">Full Name</Label>
+                <Input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  placeholder="John Doe"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  required
+                  disabled={loading || googleLoading}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  disabled={loading || googleLoading}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input 
+                  id="password"
+                  name="password"
+                  type="password" 
+                  placeholder="Create a password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  required
+                  disabled={loading || googleLoading}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input 
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password" 
+                  placeholder="Confirm password"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  required
+                  disabled={loading || googleLoading}
+                />
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="terms" 
+                  name="termsAccepted"
+                  checked={formData.termsAccepted}
+                  onCheckedChange={(checked) => 
+                    setFormData(prev => ({ ...prev, termsAccepted: !!checked }))
+                  }
+                  required 
+                  disabled={loading || googleLoading}
+                />
+                <Label htmlFor="terms" className="text-sm leading-none">
+                  I agree to the{" "}
+                  <a href="#" className="underline underline-offset-4 hover:underline">
+                    Terms
+                  </a>{" "}
+                  and{" "}
+                  <a href="#" className="underline underline-offset-4 hover:underline">
+                    Privacy Policy
+                  </a>
+                </Label>
+              </div>
+              <Button type="submit" className="w-full" disabled={loading || googleLoading}>
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating Account...
+                  </>
+                ) : (
+                  'Create Account'
+                )}
+              </Button>
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="w-full" 
+                onClick={handleGoogleSignup}
+                disabled={loading || googleLoading}
+              >
+                {googleLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing up...
+                  </>
+                ) : (
+                  'Sign up with Google'
+                )}
+              </Button>
+            </div>
+            <div className="mt-4 text-center text-sm">
+              Already have an account?{" "}
+              <a href="/auth" className="underline underline-offset-4">
+                Login
+              </a>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  )
+} 

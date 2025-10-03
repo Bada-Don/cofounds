@@ -5,6 +5,7 @@ import { Moon, Sun, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter, usePathname } from "next/navigation";
 
 interface NavLink {
   label: string;
@@ -21,7 +22,9 @@ const navLinks: NavLink[] = [
 export function Navigation() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, triggerRipple } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -40,23 +43,46 @@ export function Navigation() {
     setIsMobileMenuOpen(false);
   };
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+  const toggleTheme = (event: React.MouseEvent) => {
+    // Get the click position for the ripple effect
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    
+    // Trigger ripple effect
+    triggerRipple(x, y);
+    
+    // Small delay to sync with ripple animation
+    setTimeout(() => {
+      setTheme(theme === "dark" ? "light" : "dark");
+    }, 100);
   };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const handleLogoClick = () => {
+    // If we're on a page other than home, navigate to home
+    if (pathname !== '/') {
+      router.push('/');
+    } else {
+      // If we're on home page, check scroll position
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > 100) {
+        // Scroll to top if not already near the top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      // If already at top of home page, do nothing
+    }
+  };
+
   return (
-    <motion.nav
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+    <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? "glass border-b border-border/50 shadow-lg" 
-          : "bg-background/80 backdrop-blur-sm"
+          ? "bg-background/95 backdrop-blur-md border-b border-border/50 shadow-lg" 
+          : "bg-background/90 backdrop-blur-sm"
       }`}
       aria-label="Main navigation"
     >
@@ -64,13 +90,13 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a
-              href="#"
-              className="text-2xl font-bold gradient-text"
+            <button
+              onClick={handleLogoClick}
+              className="text-2xl font-bold gradient-text hover:opacity-90 transition-opacity"
               aria-label="CoFounds home"
             >
               CoFounds
-            </a>
+            </button>
           </div>
 
           {/* Desktop Navigation */}
@@ -106,7 +132,7 @@ export function Navigation() {
             {/* Get Started button */}
             <Button
               className="gradient-bg hover:opacity-90 transition-opacity"
-              onClick={() => scrollToSection("#newsletter")}
+              onClick={() => window.location.href = '/auth'}
             >
               Get Started
             </Button>
@@ -151,7 +177,7 @@ export function Navigation() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden glass border-t border-border/50 shadow-lg"
+            className="md:hidden bg-background/95 backdrop-blur-md border-t border-border/50 shadow-lg"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link, index) => (
@@ -165,7 +191,7 @@ export function Navigation() {
               ))}
               <Button
                 className="w-full gradient-bg hover:opacity-90 transition-opacity mt-4"
-                onClick={() => scrollToSection("#newsletter")}
+                onClick={() => window.location.href = '/auth'}
               >
                 Get Started
               </Button>
@@ -173,6 +199,6 @@ export function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </nav>
   );
 }

@@ -300,6 +300,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Performance optimizations */
+.motion-safe {
+  will-change: transform;
+  transform: translateZ(0); /* Force hardware acceleration */
+}
+
+/* Optimize scroll-based animations */
+.scroll-optimized {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
 /* Glass morphism effect */
 .glass {
   backdrop-filter: blur(16px);
@@ -334,4 +347,37 @@ html {
 
 .dark .glass::before {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+/* Theme Ripple Effect */
+.theme-ripple {
+  width: 0;
+  height: 0;
+  animation: theme-ripple-expand 0.9s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+}
+
+/* Light theme ripple - single wave */
+.theme-ripple {
+  background: radial-gradient(circle, transparent 0%, transparent 40%, rgba(26, 26, 26, 0.8) 45%, rgba(26, 26, 26, 0.6) 50%, transparent 55%, transparent 100%);
+}
+
+/* Dark theme ripple - single wave */
+.dark .theme-ripple {
+  background: radial-gradient(circle, transparent 0%, transparent 40%, rgba(255, 255, 255, 0.8) 45%, rgba(255, 255, 255, 0.6) 50%, transparent 55%, transparent 100%);
+}
+
+@keyframes theme-ripple-expand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    width: 200vmax;
+    height: 200vmax;
+    opacity: 0;
+  }
 }
