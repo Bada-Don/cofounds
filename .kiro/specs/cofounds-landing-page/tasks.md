@@ -46,8 +46,6 @@
 
 - [x] 6. Create Hero section with CTAs and animations
 
-
-
   - Create src/components/sections/hero.tsx
   - Add "Backed By" section with Google for Startups and Y Combinator badges using Shadcn Badge
   - Implement main heading "Hiring is Broken - We are here to fix it!" with gradient text effect
@@ -58,13 +56,11 @@
   - Create floating background elements with CSS animations
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 7.1, 7.5, 7.6, 7.7_
 
-
 - [ ] 7. Implement responsive layout for Hero section
 
   - Add responsive typography scaling (text-4xl → text-6xl)
   - Implement mobile stacking for badges and buttons
   - Ensure proper spacing on all breakpoints
-
 
   - _Requirements: 2.7, 8.1, 8.2, 8.3, 8.4_
 
@@ -84,7 +80,6 @@
 
   - Implement hover effects: lift (translateY -8px), scale (1.02), shadow increase
 
-
   - Add gradient border on hover using pseudo-elements
   - Implement stagger animation on scroll using Framer Motion
   - Add fade-in animation when section enters viewport
@@ -95,7 +90,6 @@
   - Create src/components/sections/faq.tsx
   - Add section title "Everything you need to know about Cofounds"
   - Define FAQ data array with 5 questions and answers
-
 
   - Implement Shadcn Accordion component with single expansion mode
   - Create description card with "Cofounds is a modern job search companion..." text
@@ -118,7 +112,6 @@
   - Add loading state during submission
   - Display success/error feedback
 
-
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 10.5_
 
 - [ ] 12. Add social media icons and footer to Newsletter section
@@ -127,7 +120,6 @@
   - Implement hover effects on social icons (color transition, scale)
   - Add footer text "© 2025 Cofounds. All rights reserved | Privacy | Terms"
   - Implement fade-in animation on scroll
-
 
   - _Requirements: 5.6, 5.7, 7.1, 7.2_
 

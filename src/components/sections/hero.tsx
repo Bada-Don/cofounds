@@ -8,21 +8,35 @@ import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const y = useTransform(scrollY, [0, 800], [0, 100]);
+  const opacity = useTransform(scrollY, [0, 600, 900], [1, 0.8, 0]);
+  const scale = useTransform(scrollY, [0, 600], [1, 0.95]);
+  const backgroundY = useTransform(scrollY, [0, 1000], [0, -50]);
+  const orbY = useTransform(scrollY, [0, 1000], [0, 200]);
+  const headingOpacity = useTransform(scrollY, [0, 500, 700], [1, 0.9, 0]);
+  const ctaOpacity = useTransform(scrollY, [0, 400, 600], [1, 0.8, 0]);
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-20">
       {/* Animated grid background */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+      <motion.div 
+        style={{ y: backgroundY }}
+        className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"
+      />
 
       {/* Gradient orbs */}
-      <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl animate-float" />
-      <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-purple-500/20 to-cyan-500/20 blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+      <motion.div 
+        style={{ y: orbY }}
+        className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl animate-float" 
+      />
+      <motion.div 
+        style={{ y: orbY, animationDelay: "2s" }}
+        className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-purple-500/20 to-cyan-500/20 blur-3xl animate-float" 
+      />
 
       <div className="container px-4 md:px-6 relative z-10">
         <motion.div
-          style={{ y, opacity }}
+          style={{ y, opacity, scale }}
           className="text-center max-w-4xl mx-auto"
         >
           {/* Backed By Badges */}
@@ -52,6 +66,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            style={{ opacity: headingOpacity }}
             className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6"
           >
             <span className="hero-heading">
@@ -76,6 +91,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
+            style={{ opacity: ctaOpacity }}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
           >
             <Button

@@ -54,7 +54,9 @@ export function Navigation() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "glass border-b border-border" : ""
+        isScrolled 
+          ? "glass border-b border-border/50 shadow-lg" 
+          : "bg-background/80 backdrop-blur-sm"
       }`}
       aria-label="Main navigation"
     >
@@ -73,13 +75,14 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
+            {navLinks.map((link, index) => (
               <button
-                key={link.href}
+                key={`${link.label}-${index}`}
                 onClick={() => scrollToSection(link.href)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105 relative group"
               >
                 {link.label}
+                <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-primary to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
               </button>
             ))}
           </div>
@@ -148,14 +151,14 @@ export function Navigation() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden glass border-t border-border"
+            className="md:hidden glass border-t border-border/50 shadow-lg"
           >
             <div className="px-4 py-6 space-y-4">
-              {navLinks.map((link) => (
+              {navLinks.map((link, index) => (
                 <button
-                  key={link.href}
+                  key={`${link.label}-${index}`}
                   onClick={() => scrollToSection(link.href)}
-                  className="block w-full text-left text-base font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+                  className="block w-full text-left text-base font-medium text-muted-foreground hover:text-foreground transition-all duration-300 py-3 px-2 rounded-md hover:bg-muted/50 relative group"
                 >
                   {link.label}
                 </button>

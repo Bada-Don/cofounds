@@ -82,13 +82,13 @@ const itemVariants = {
 export function Features() {
   return (
     <section id="features" className="w-full py-20 md:py-32 relative">
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-16 max-w-4xl mx-auto"
         >
           <h2 className="section-heading mb-4">
             Why CoFounds Delivers Results — Not Just Listings
@@ -104,14 +104,14 @@ export function Features() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
         >
           {features.map((feature, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <Card className="group relative h-full border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-2">
+              <Card className="group relative h-full feature-card-border bg-card/50 backdrop-blur-sm transition-all duration-300 feature-card-shadow hover:-translate-y-2">
                 <CardContent className="p-6">
-                  {/* Icon with gradient background */}
-                  <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 group-hover:from-primary/30 group-hover:to-secondary/30 transition-all duration-300">
+                  {/* Icon with theme-aware gradient background */}
+                  <div className="feature-icon-bg">
                     <feature.icon className="h-6 w-6 text-primary" />
                   </div>
 
@@ -125,10 +125,8 @@ export function Features() {
                     {feature.description}
                   </p>
 
-                  {/* Gradient border effect on hover */}
-                  <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/20 to-secondary/20 blur-xl" />
-                  </div>
+                  {/* Theme-aware gradient glow effect on hover */}
+                  <div className="feature-card-glow" />
                 </CardContent>
               </Card>
             </motion.div>

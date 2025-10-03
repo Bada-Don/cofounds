@@ -46,13 +46,13 @@ const faqs: FAQItem[] = [
 export function FAQ() {
   return (
     <section id="faq" className="w-full py-20 md:py-32 bg-muted/30">
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-16 max-w-4xl mx-auto"
         >
           <h2 className="section-heading mb-4">
             Everything you need to know about Cofounds

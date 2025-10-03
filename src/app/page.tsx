@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/hero";
 import { Features } from "@/components/sections/features";
 import { FAQ } from "@/components/sections/faq";
 import { Newsletter } from "@/components/sections/newsletter";
+import { ScrollToTop } from "@/components/scroll-to-top";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <FAQ />
         <Newsletter />
       </main>
+      <ScrollToTop />
     </div>
   );
 }
